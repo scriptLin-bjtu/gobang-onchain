@@ -4,7 +4,7 @@ pragma solidity 0.8.30;
 contract Game {
     uint256 public gameId;
     uint8 public gameState;
-    //gamestate 0 not start 1player1 2player2 3end
+    //gamestate 0 not start 1player1 2player2 3 player1win 4 player2win
     uint8[16][16] public gameBoard;
     address public p1address;
     address public p2address;
@@ -60,7 +60,7 @@ contract Game {
         int8 dy,
         uint8 role
     ) internal view returns (uint8 count, bool leftEmpty, bool rightEmpty) {
-        count = 1;
+        count = 0;
 
         // 正方向
         int8 i = int8(x) + dx;
@@ -101,20 +101,27 @@ contract Game {
             j >= 0 &&
             j < 16 &&
             board[uint8(i)][uint8(j)] == 0);
+
+        // 最后把中心子补回来
+        count += 1;
     }
 
-    function isOpenThree(
+    function isForbidden(
         uint8[16][16] storage board,
         uint8 x,
         uint8 y,
         uint8 role
     ) internal view returns (bool) {
+        if (role != 1) return false; // 白棋无禁手
+
         int8[4] memory dx = [int8(1), 0, 1, 1];
-        int8[4] memory dy = [int8(0), int8(1), int8(1), int8(-1)];
-        uint8 openThrees = 0;
+        int8[4] memory dy = [int8(0), 1, 1, -1];
+
+        uint8 openThree = 0;
+        uint8 openFour = 0;
 
         for (uint8 d = 0; d < 4; d++) {
-            (uint8 count, bool leftEmpty, bool rightEmpty) = lineStatus(
+            (uint8 cnt, bool leftEmpty, bool rightEmpty) = lineStatus(
                 board,
                 x,
                 y,
@@ -123,49 +130,23 @@ contract Game {
                 role
             );
 
-            // 活三条件：count == 3 && 两端都空
-            if (count == 3 && leftEmpty && rightEmpty) {
-                openThrees++;
-            }
-        }
-        return openThrees >= 2; // 双活三
-    }
+            // 活三：恰好 3 子且两端空
+            if (cnt == 3 && leftEmpty && rightEmpty) openThree++;
 
-    function isOpenFour(
-        uint8[16][16] storage board,
-        uint8 x,
-        uint8 y,
-        uint8 role
-    ) internal view returns (bool) {
-        int8[4] memory dx = [int8(1), int8(0), int8(1), int8(1)];
-        int8[4] memory dy = [int8(0), int8(1), int8(1), int8(-1)];
-        uint8 openFours = 0;
+            // 冲四：恰好 4 子且至少一端空（另一端已堵或边界）
+            if (cnt == 4 && (leftEmpty || rightEmpty)) openFour++;
 
-        for (uint8 d = 0; d < 4; d++) {
-            (uint8 count, bool leftEmpty, bool rightEmpty) = lineStatus(
-                board,
-                x,
-                y,
-                dx[d],
-                dy[d],
-                role
-            );
-            if (count == 4 && (leftEmpty || rightEmpty)) {
-                openFours++;
-            }
+            // 提前短路，已构成禁手
+            if (openThree >= 2 || openFour >= 2) return true;
         }
-        return openFours >= 2;
+
+        return false;
     }
 
     function judge(uint8 x, uint8 y, uint8 role) private view returns (int8) {
         // --------- 1. 黑棋禁手检测 ---------
-        if (role == 1) {
-            if (
-                isOpenThree(gameBoard, x, y, role) ||
-                isOpenFour(gameBoard, x, y, role)
-            ) {
-                return -1;
-            }
+        if (isForbidden(gameBoard, x, y, role)) {
+            return -1;
         }
 
         // --------- 2. 五连子检测 ---------
@@ -218,6 +199,12 @@ contract Game {
             revert("game has started");
         }
         uint8 role = getRole(player1.playerAddress, player2.playerAddress);
+        if (
+            (role == 1 && player1.playerState == 1) ||
+            (role == 2 && player2.playerState == 2)
+        ) {
+            revert("you already readyed");
+        }
         if (role == 1 && player1.playerState == 0) {
             player1.playerState = 1;
         }
@@ -235,41 +222,39 @@ contract Game {
         require(
             role != 0 &&
                 (gameState == 1 || gameState == 2) &&
-                x >= 0 &&
                 x < 16 &&
-                y >= 0 &&
                 y < 16 &&
                 gameBoard[x][y] == 0,
             "Error new step"
         );
-        if (role == 1 && player1.playerState == 1) {
-            gameBoard[x][y] = 1;
-            player1.playerState = 2;
-            player2.playerState = 1;
-            gameState = 2;
-            emit NewStep(player1.playerAddress, x, y);
-        }
-        if (role == 2 && player2.playerState == 1) {
-            gameBoard[x][y] = 2;
-            player1.playerState = 1;
-            player2.playerState = 2;
-            gameState = 1;
-            emit NewStep(player2.playerAddress, x, y);
-        }
+        gameBoard[x][y] = role;
         int8 result = judge(x, y, role);
         if (result == -1) {
+            gameBoard[x][y] = 0;
             revert("wrong step player1");
-        }
-        if (result == 1) {
+        } else if (result == 0) {
+            if (role == 1 && player1.playerState == 1) {
+                player1.playerState = 2;
+                player2.playerState = 1;
+                gameState = 2;
+                emit NewStep(player1.playerAddress, x, y);
+            }
+            if (role == 2 && player2.playerState == 1) {
+                player1.playerState = 1;
+                player2.playerState = 2;
+                gameState = 1;
+                emit NewStep(player2.playerAddress, x, y);
+            }
+            return;
+        } else if (result == 1) {
             player1.playerState = 3;
             player2.playerState = 4;
             gameState = 3;
             emit GameEnded(player1.playerAddress, "player1 win");
-        }
-        if (result == 2) {
+        } else if (result == 2) {
             player1.playerState = 4;
             player2.playerState = 3;
-            gameState = 3;
+            gameState = 4;
             emit GameEnded(player2.playerAddress, "player2 win");
         }
     }
@@ -283,7 +268,7 @@ contract Game {
         if (role == 1) {
             player1.playerState = 4;
             player2.playerState = 3;
-            gameState = 3;
+            gameState = 4;
             emit GameEnded(player2.playerAddress, "player1 give up");
         }
         if (role == 2) {
