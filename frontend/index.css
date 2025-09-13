@@ -1,0 +1,306 @@
+/* 背景遮罩 */
+.custom-alert-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* 弹窗 */
+.custom-alert-box {
+  background: #fff;
+  color: #333;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 0.2s ease;
+}
+
+/* 按钮 */
+.custom-alert-button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.custom-alert-button:hover {
+  background: #0056b3;
+}
+
+
+
+/* 遮罩 */
+.custom-prompt-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* 弹窗 */
+.custom-prompt-box {
+  background: #fff;
+  color: #333;
+  padding: 20px;
+  border-radius: 12px;
+  width: 320px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  animation: fadeIn 0.2s ease;
+}
+
+/* 输入框 */
+.custom-prompt-input {
+  width: 80%;
+  max-width: 240px;
+  margin: 12px auto;
+  display: block;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* 按钮容器 */
+.custom-prompt-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+/* 按钮 */
+.custom-prompt-button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.custom-prompt-ok {
+  background: #007bff;
+  color: white;
+}
+
+.custom-prompt-ok:hover {
+  background: #0056b3;
+}
+
+.custom-prompt-cancel {
+  background: #e0e0e0;
+}
+
+.custom-prompt-cancel:hover {
+  background: #bdbdbd;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.home {
+  max-width: 360px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  font-family: "Inter", sans-serif;
+  text-align: center;
+}
+
+/* 输入框 */
+.home input[type="number"] {
+  width: 90%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.home input[type="number"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+}
+
+/* 通用按钮 */
+.home button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.home button:active {
+  transform: scale(0.98);
+}
+
+/* 特定按钮风格 */
+.game_btn {
+  background: #007bff;
+  color: white;
+}
+.game_btn:hover {
+  background: #0056b3;
+}
+
+.create_btn {
+  background: #e0e0e0;
+  color: #333;
+}
+.create_btn:hover {
+  background: #bdbdbd;
+}
+
+/* 账户信息文本 */
+.account_info {
+  font-size: 13px;
+  color: #666;
+  margin: 12px 0;
+}
+
+/* 链接样式 */
+.home a {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.home a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.game {
+  max-width: 520px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.game h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.game h2.game_state {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.game p.game_info {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #777;
+}
+
+.ready_btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.1s;
+  margin-bottom: 20px;
+}
+
+.ready_btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+#game_canvas {
+  display: block;
+  margin: 0 auto;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  max-width: 100%; /* 防止溢出 */
+  height: auto;     /* 保持比例 */
+}
+
+#game_canvas:hover {
+  box-shadow: 0 0 12px rgba(0,123,255,0.5);
+}
+
+/* 🔹 移动端适配 */
+@media (max-width: 600px) {
+  .game {
+    padding: 16px;
+    margin: 12px;
+  }
+
+  .game h1 {
+    font-size: 18px;
+  }
+
+  .game h2.game_state {
+    font-size: 14px;
+  }
+
+  .game p.game_info {
+    font-size: 13px;
+  }
+
+  .ready_btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  #game_canvas {
+  display: block;
+  margin: 0 auto;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+
+  width: 100%;          /* 占满容器宽度 */
+  aspect-ratio: 1 / 1;  /* 强制正方形，保持宽高一致 */
+  height: auto;         /* 自动算高 */
+}
+}
+
+
