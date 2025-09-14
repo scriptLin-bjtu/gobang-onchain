@@ -56,7 +56,7 @@ export function drawBoard(board = []) {
     });
 }
 
-export function printGameState(gameState) {
+export function printGameState(gameState, reason = "") {
     switch (gameState) {
         case 0:
             document.querySelector(".game_state").textContent =
@@ -72,11 +72,11 @@ export function printGameState(gameState) {
             break;
         case 3:
             document.querySelector(".game_state").textContent =
-                "GameState: GameEnded Player1 win";
+                "GameState: GameEnded Player1 win" + reason;
             break;
         case 4:
             document.querySelector(".game_state").textContent =
-                "GameState: GameEnded Player2 win";
+                "GameState: GameEnded Player2 win" + reason;
             break;
     }
 }

@@ -11,6 +11,18 @@ export const ABI = [
     "event GameStarted(address indexed player1, address indexed player2)",
     "event NewStep(address indexed player, uint8 x, uint8 y)",
     "event GameEnded(address indexed winner, string reason)",
+    "function giveUp()",
+];
+
+export const MENU_ABI = [
+    "event GameCreated(uint256 gameId, address player1, address player2)",
+    "event AccountCreated(address playerAddress)",
+    "function getPlayerInfo(address playerAddress) view returns (tuple(address playerAddress, uint256[] gameIds, uint256 winTimes, uint256 loseTimes))",
+    "function registerPlayer(address playerAddress)",
+    "function createGame(address player1, address player2)",
+    "function getGameAddress(uint256 gameId) view returns (address)",
+    "function getTopPlayers() view returns (tuple(address playerAddress, uint256[] gameIds, uint256 winTimes, uint256 loseTimes)[])",
+    "function getTotalGamesAndTotalPlayers() view returns (uint256, uint256)",
 ];
 
 export function connectToProvider(RPC_URL) {

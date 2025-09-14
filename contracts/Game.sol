@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.30;
-
+import "./Menu.sol";
 contract Game {
     uint256 public gameId;
     uint8 public gameState;
@@ -10,6 +10,7 @@ contract Game {
     address public p2address;
     Player private player1;
     Player private player2;
+    Menu private menu;
 
     struct Player {
         address playerAddress;
@@ -30,12 +31,13 @@ contract Game {
 
     event GameEnded(address indexed winner, string reason);
 
-    constructor(uint256 _gameId, address a1, address a2) {
+    constructor(uint256 _gameId, address a1, address a2, address menu_address) {
         gameId = _gameId;
         player1 = Player(a1, 0);
         player2 = Player(a2, 0);
         p1address = a1;
         p2address = a2;
+        menu = Menu(menu_address);
     }
 
     function getRole(address p1, address p2) private view returns (uint8) {
@@ -251,11 +253,21 @@ contract Game {
             player2.playerState = 4;
             gameState = 3;
             emit GameEnded(player1.playerAddress, "player1 win");
+            menu.updateResult(
+                gameId,
+                player1.playerAddress,
+                player2.playerAddress
+            );
         } else if (result == 2) {
             player1.playerState = 4;
             player2.playerState = 3;
             gameState = 4;
             emit GameEnded(player2.playerAddress, "player2 win");
+            menu.updateResult(
+                gameId,
+                player2.playerAddress,
+                player1.playerAddress
+            );
         }
     }
 
@@ -270,12 +282,22 @@ contract Game {
             player2.playerState = 3;
             gameState = 4;
             emit GameEnded(player2.playerAddress, "player1 give up");
+            menu.updateResult(
+                gameId,
+                player2.playerAddress,
+                player1.playerAddress
+            );
         }
         if (role == 2) {
             player1.playerState = 3;
             player2.playerState = 4;
             gameState = 3;
             emit GameEnded(player1.playerAddress, "player2 give up");
+            menu.updateResult(
+                gameId,
+                player1.playerAddress,
+                player2.playerAddress
+            );
         }
     }
 }
