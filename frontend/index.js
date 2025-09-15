@@ -83,7 +83,7 @@ const routes = [
                         }
                         const [addr, option] = await CreateGamePrompt(
                             "Enter your opponent's address:",
-                            []
+                            JSON.parse(localStorage.getItem("friendList")) || []
                         );
                         //console.log(addr, option);
                         changeLog("create game", 0);
@@ -169,6 +169,12 @@ const routes = [
                                     GameAlert(
                                         `GameCreated\ngameId:${args[0]}\nplayer1:${args[1]}\nplayer2:${args[2]}`
                                     );
+                                    const playerInfo =
+                                        await MENU_CONTRACT.getPlayerInfo(
+                                            WALLET.address
+                                        );
+                                    printPlayerInfo(playerInfo);
+                                    await printTotalInfo();
                                 }
                             }
                         );

@@ -298,12 +298,22 @@
   border-radius: 8px;
   cursor: pointer;
   transition: box-shadow 0.3s;
-  max-width: 100%; /* 防止溢出 */
-  height: auto;     /* 保持比例 */
 }
 
 #game_canvas:hover {
   box-shadow: 0 0 12px rgba(0,123,255,0.5);
+}
+
+@media screen and (max-width: 768px) {
+  .game {
+    padding: 5px;
+    margin: 5px auto;
+    width: 100vw;
+  }
+  #game_canvas {
+    transform: scale(0.7);
+    transform-origin: top left;
+  }
 }
 
 .players {
@@ -412,46 +422,6 @@
 .players .actions {
   display: flex;
   gap: 8px;
-}
-
-
-/* 🔹 移动端适配 */
-@media (max-width: 600px) {
-  .game {
-    padding: 16px;
-    margin: 12px;
-  }
-
-  .game h1 {
-    font-size: 18px;
-  }
-
-  .game h2.game_state {
-    font-size: 14px;
-  }
-
-  .game p.game_info {
-    font-size: 13px;
-  }
-
-  .ready_btn,.give_up_btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-  }
-
-  #game_canvas {
-  display: block;
-  margin: 0 auto;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: box-shadow 0.3s;
-
-  width: 100%;          /* 占满容器宽度 */
-  aspect-ratio: 1 / 1;  /* 强制正方形，保持宽高一致 */
-  height: auto;         /* 自动算高 */
-}
 }
 
 

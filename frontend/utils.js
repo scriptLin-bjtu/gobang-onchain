@@ -104,12 +104,12 @@ export async function CreateGamePrompt(message, suggestList = []) {
 
         // 渲染 suggestList
         const suggestBox = box.querySelector(".custom-suggest-list");
-        suggestList.forEach((addr) => {
+        suggestList.forEach((i) => {
             const item = document.createElement("div");
             item.className = "custom-suggest-item";
-            item.textContent = addr;
+            item.textContent = checkIfFriendAddress(i.address);
             item.addEventListener("click", () => {
-                input.value = addr;
+                input.value = i.address;
             });
             suggestBox.appendChild(item);
         });
