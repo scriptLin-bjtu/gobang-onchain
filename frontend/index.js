@@ -24,7 +24,7 @@ let WALLET;
 let CONTRACT;
 let CONTRACT_ADDRESS;
 let MENU_CONTRACT;
-let MENU_CONTRACT_ADDRESS = "0x40d531023a9256d22af1d2d03b33a951f8db9c6c";
+let MENU_CONTRACT_ADDRESS = "0x09DCdcA9063Ea9cc5eBd9D2306D1Cf841EBb8600";
 const routes = [
     {
         path: /^\/$/,
@@ -40,8 +40,8 @@ const routes = [
             <p class="account_info notice"></p>
             <button class='register_btn'>Register your account</button>
             <a href="https://faucet.testnet.oasys.games/" target="_blank">faucet</a> |
-            <a href="https://github.com/scriptLin-bjtu/gobang-onchain" target="_blank">guide</a> |
-            <a href="https://explorer.testnet.oasys.games/address/0x40d531023A9256D22Af1D2D03b33A951F8DB9C6C" target="_blank">contract</a>
+            <a href="https://github.com/scriptLin-bjtu/gobang-onchain/blob/main/GUIDE.md" target="_blank">guide</a> |
+            <a href="https://explorer.testnet.oasys.games/address/0x09DCdcA9063Ea9cc5eBd9D2306D1Cf841EBb8600" target="_blank">contract</a>
             <p class="total_info"></p>
             </div>
         `,
