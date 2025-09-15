@@ -273,7 +273,7 @@
   color: #777;
 }
 
-.ready_btn,.give_up_btn{
+.ready_btn,.give_up_btn,.back_btn{
   background: #007bff;
   color: #fff;
   border: none;
@@ -286,7 +286,7 @@
   margin-bottom: 20px;
 }
 
-.ready_btn:hover,.give_up_btn:hover {
+.ready_btn:hover,.give_up_btn:hover,.back_btn:hover {
   background: #0056b3;
   transform: translateY(-1px);
 }

@@ -39,7 +39,9 @@ const routes = [
             <button class='create_btn'>create a account</button>
             <p class="account_info notice"></p>
             <button class='register_btn'>Register your account</button>
-            <a href="https://faucet.testnet.oasys.games/" target="_blank">faucet</a>
+            <a href="https://faucet.testnet.oasys.games/" target="_blank">faucet</a> |
+            <a href="https://github.com/scriptLin-bjtu/gobang-onchain" target="_blank">guide</a> |
+            <a href="https://explorer.testnet.oasys.games/address/0x40d531023A9256D22Af1D2D03b33A951F8DB9C6C" target="_blank">contract</a>
             <p class="total_info"></p>
             </div>
         `,
@@ -136,6 +138,10 @@ const routes = [
                 .querySelector(".sign_btn")
                 .addEventListener("click", async () => {
                     try {
+                        if (WALLET) {
+                            GameAlert("You have already signed in");
+                            return;
+                        }
                         const privateKey = await GamePrompt(
                             "enter your private key:"
                         );
@@ -221,6 +227,7 @@ const routes = [
         <p class="game_info">Loading...</p>
         <button class='ready_btn'>ready</button>
         <button class='give_up_btn' style="display: none;">give up</button>
+        <button class='back_btn'>back</button>
         <canvas id="game_canvas" width="480" height="480" style="border: 1px solid black; cursor: pointer;"></canvas>
         </div>
         `,
@@ -232,6 +239,11 @@ const routes = [
                 const gameBoard = await getGameBoard(CONTRACT);
                 drawBoard(gameBoard);
                 const gameState = Number(await CONTRACT.gameState());
+                document
+                    .querySelector(".back_btn")
+                    .addEventListener("click", () => {
+                        navigateTo(`/`);
+                    });
                 document.querySelector(
                     ".game_info"
                 ).innerHTML = `Player1(Black):${checkIfFriendAddress(
@@ -341,9 +353,15 @@ const routes = [
             <button class="search_btn">search</button>
             <button class="add_friend_btn">add friend</button>
         </div>
+        <button class='back_btn'>back</button>
         </div>`,
         func: async () => {
             try {
+                document
+                    .querySelector(".back_btn")
+                    .addEventListener("click", () => {
+                        navigateTo(`/`);
+                    });
                 await loadRankAndFriends();
                 document
                     .querySelector(".search_btn")
@@ -400,7 +418,7 @@ async function intoGame(gameState, contract, provider) {
     console.log("intoGame");
     document.querySelector(".ready_btn").remove();
     if (gameState === 1 || gameState === 2) {
-        document.querySelector(".give_up_btn").style.display = "block";
+        document.querySelector(".give_up_btn").style.display = "inline";
         document
             .querySelector(".give_up_btn")
             .addEventListener("click", async () => {
